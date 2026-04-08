@@ -31,23 +31,20 @@
   @keyframes grad { 0%,100%{background-position:0% 50%} 50%{background-position:100% 50%} }
   .wuphf-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(131,56,236,0.4); }
   .wuphf-btn:active { transform: scale(0.98); }
-  /* Confirmation screen */
   #sent-screen { display: none; text-align: center; }
   #sent-screen.show { display: block; animation: popIn 0.4s cubic-bezier(0.34,1.56,0.64,1); }
   @keyframes popIn { from{opacity:0;transform:scale(0.85)} to{opacity:1;transform:scale(1)} }
   .sent-icon { font-size: 44px; margin-bottom: 8px; }
   .sent-title { font-family: 'Nunito', sans-serif; font-weight: 900; font-size: 24px; color: #222; margin-bottom: 6px; }
   .sent-sub { font-size: 13px; color: #888; margin-bottom: 22px; }
-  .action-card { display: flex; align-items: flex-start; gap: 12px; background: #f8f8f8; border-radius: 12px; padding: 14px 16px; margin-bottom: 10px; text-align: left; animation: slideUp 0.3s ease backwards; }
-  .action-card:nth-child(1) { animation-delay: 0.1s; }
-  .action-card:nth-child(2) { animation-delay: 0.2s; }
-  @keyframes slideUp { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
-  .action-icon { font-size: 24px; flex-shrink: 0; }
+  .action-card { display: flex; align-items: flex-start; gap: 12px; background: #f8f8f8; border-radius: 12px; padding: 14px 16px; margin-bottom: 10px; text-align: left; }
+  .action-icon { font-size: 22px; flex-shrink: 0; }
   .action-text { font-size: 13px; color: #444; line-height: 1.6; }
   .action-text strong { color: #111; }
-  .teams-open-btn { display: block; width: 100%; margin-top: 6px; background: #5b5fc7; color: white; border: none; border-radius: 10px; padding: 12px; font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 700; cursor: pointer; text-align: center; text-decoration: none; transition: background 0.2s; }
-  .teams-open-btn:hover { background: #4a4eb5; }
-  .send-another { width: 100%; margin-top: 14px; background: none; border: 2px solid #e5e5e5; border-radius: 10px; padding: 11px; font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 600; color: #666; cursor: pointer; transition: border-color 0.2s, color 0.2s; }
+  /* Teams link styled as a button — real <a> tag so href always works */
+  .teams-link { display: block; width: 100%; margin: 4px 0 10px; background: #5b5fc7; color: white; border-radius: 10px; padding: 14px; font-family: 'Inter', sans-serif; font-size: 15px; font-weight: 700; text-align: center; text-decoration: none; transition: background 0.2s; }
+  .teams-link:hover { background: #4a4eb5; color: white; }
+  .send-another { width: 100%; background: none; border: 2px solid #e5e5e5; border-radius: 10px; padding: 11px; font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 600; color: #666; cursor: pointer; transition: border-color 0.2s, color 0.2s; }
   .send-another:hover { border-color: #457b9d; color: #457b9d; }
   @media (max-width: 400px) { .card{padding:28px 20px 24px} .logo span{font-size:56px} .recipients{flex-direction:column} }
 </style>
@@ -76,19 +73,20 @@
     </div>
   </div>
 
-  <!-- Compose -->
+  <!-- Compose screen -->
   <div id="compose">
     <div class="message-label">Your message</div>
-    <textarea id="msg" placeholder="Type your message here…" maxlength="500" oninput="document.getElementById('cnt').textContent=this.value.length"></textarea>
+    <textarea id="msg" placeholder="Type your message here…" maxlength="500"
+      oninput="document.getElementById('cnt').textContent=this.value.length"></textarea>
     <div class="char-count"><span id="cnt">0</span> / 500</div>
     <button class="wuphf-btn" onclick="wuphf()">WUPHF!</button>
   </div>
 
-  <!-- Confirmation -->
+  <!-- Confirmation screen -->
   <div id="sent-screen">
     <div class="sent-icon">🚀</div>
     <div class="sent-title">WUPHF'd!</div>
-    <div class="sent-sub">One click each and it's done:</div>
+    <div class="sent-sub">Two quick steps:</div>
 
     <div class="action-card">
       <div class="action-icon">📧</div>
@@ -101,13 +99,14 @@
     <div class="action-card">
       <div class="action-icon">💼</div>
       <div class="action-text">
-        <strong>Teams:</strong> Click the button below, then press <strong>Enter</strong>.
+        Click the button below → Teams opens with your message → press <strong>Enter</strong>.
       </div>
     </div>
 
-    <button class="teams-open-btn" id="teams-btn" onclick="openTeams()">
-      💼 Open Teams chat &amp; press Enter
-    </button>
+    <!-- Real <a> tag — href is set by JS before this screen shows. No window.open needed. -->
+    <a id="teams-link" href="#" target="_blank" rel="noopener" class="teams-link">
+      💼 Open Teams &amp; press Enter to send
+    </a>
 
     <button class="send-another" onclick="reset()">Send another message</button>
   </div>
@@ -116,14 +115,13 @@
 <script>
   const M = 'michelle.carbone@appliedvalue.com';
   const R = 'rhonda.batchelder@appliedvalue.com';
-  let teamsUrl = '';
 
   function wuphf() {
     const msg = document.getElementById('msg').value.trim();
     if (!msg) {
       const t = document.getElementById('msg');
       t.classList.remove('shake');
-      void t.offsetWidth; // reflow to restart animation
+      void t.offsetWidth;
       t.classList.add('shake');
       t.focus();
       setTimeout(() => t.classList.remove('shake'), 500);
@@ -133,25 +131,19 @@
     const enc  = encodeURIComponent(msg);
     const subj = encodeURIComponent('WUPHF');
 
-    // Save Teams URL in JS variable — reliable, not affected by page navigation
-    teamsUrl = 'https://teams.microsoft.com/l/chat/0/0?users=' + M + ',' + R + '&message=' + enc;
+    // Set the Teams link href directly on the <a> element BEFORE anything else.
+    // This is the most reliable method — no window.open, no JS variable, just a real link.
+    const teamsUrl = 'https://teams.microsoft.com/l/chat/0/0?users=' + M + ',' + R + '&message=' + enc;
+    document.getElementById('teams-link').href = teamsUrl;
 
-    // Open Outlook using a temporary anchor — does NOT navigate the page
-    const a = document.createElement('a');
-    a.href = 'mailto:' + M + ',' + R + '?subject=' + subj + '&body=' + enc;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
+    // Open Outlook. mailto: never reloads the page so the Teams href above stays intact.
+    window.location.href = 'mailto:' + M + ',' + R + '?subject=' + subj + '&body=' + enc;
 
-    // Show confirmation
+    // Show confirmation screen
     document.getElementById('compose').style.display = 'none';
     const s = document.getElementById('sent-screen');
     s.style.display = 'block';
     s.classList.add('show');
-  }
-
-  function openTeams() {
-    if (teamsUrl) window.open(teamsUrl, '_blank');
   }
 
   function reset() {
@@ -161,7 +153,7 @@
     const s = document.getElementById('sent-screen');
     s.style.display = 'none';
     s.classList.remove('show');
-    teamsUrl = '';
+    document.getElementById('teams-link').href = '#';
     document.getElementById('msg').focus();
   }
 
