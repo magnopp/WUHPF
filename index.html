@@ -37,14 +37,15 @@
   .sent-icon { font-size: 44px; margin-bottom: 8px; }
   .sent-title { font-family: 'Nunito', sans-serif; font-weight: 900; font-size: 24px; color: #222; margin-bottom: 6px; }
   .sent-sub { font-size: 13px; color: #888; margin-bottom: 20px; }
-  .send-link { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; padding: 15px; border-radius: 12px; font-family: 'Inter', sans-serif; font-size: 15px; font-weight: 700; text-decoration: none; margin-bottom: 10px; transition: opacity 0.2s, transform 0.1s; }
+  .send-link { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; padding: 15px; border-radius: 12px; font-family: 'Inter', sans-serif; font-size: 15px; font-weight: 700; text-decoration: none; margin-bottom: 10px; transition: opacity 0.15s, transform 0.1s; cursor: pointer; border: none; }
   .send-link:hover { opacity: 0.88; transform: translateY(-1px); }
   .send-link:active { transform: scale(0.98); }
-  .send-link.done { opacity: 0.45; pointer-events: none; }
-  .link-email { background: #e8f4fd; color: #1565c0; border: 2px solid #bbdefb; }
+  .link-email { background: #e8f4fd; color: #1565c0; border: 2px solid #bbdefb !important; }
   .link-teams { background: #5b5fc7; color: white; }
   .step-num { background: rgba(0,0,0,0.12); border-radius: 50%; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 800; flex-shrink: 0; }
-  .hint { font-size: 11px; color: #aaa; margin-bottom: 18px; }
+  .copied-badge { display: inline-block; background: #d1fae5; color: #065f46; font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 100px; margin-bottom: 10px; animation: fadeIn 0.3s ease; }
+  @keyframes fadeIn { from{opacity:0;transform:translateY(4px)} to{opacity:1;transform:translateY(0)} }
+  .hint { font-size: 11px; color: #aaa; margin-bottom: 18px; line-height: 1.6; }
   .send-another { width: 100%; background: none; border: 2px solid #e5e5e5; border-radius: 10px; padding: 11px; font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 600; color: #666; cursor: pointer; transition: border-color 0.2s, color 0.2s; }
   .send-another:hover { border-color: #457b9d; color: #457b9d; }
   @media (max-width: 400px) { .card{padding:28px 20px 24px} .logo span{font-size:56px} .recipients{flex-direction:column} }
@@ -83,30 +84,40 @@
     <button class="wuphf-btn" onclick="wuphf()">WUPHF!</button>
   </div>
 
-  <!-- Confirmation screen — shown after clicking WUPHF -->
+  <!-- Confirmation screen -->
   <div id="sent-screen">
     <div class="sent-icon">🚀</div>
     <div class="sent-title">Ready to send!</div>
-    <div class="sent-sub">Click each button below — then Send / Enter in the window that opens.</div>
+    <div class="sent-sub">Click each button — then Send / Enter in the window that opens.</div>
 
-    <!-- Step 1: Email — plain anchor, no JS navigation -->
-    <a id="email-link" href="#" class="send-link link-email" onclick="markDone(this)">
+    <!-- Email -->
+    <a id="email-link" href="#" class="send-link link-email">
       <span class="step-num">1</span>
       📧 Open Outlook — then click Send
     </a>
 
-    <!-- Step 2 & 3: Teams — two 1:1 chats so message pre-fills -->
-    <a id="teams-michelle" href="#" target="_blank" rel="noopener" class="send-link link-teams" onclick="markDone(this)">
+    <!-- Teams Michelle — clicking copies message to clipboard first -->
+    <a id="teams-michelle" href="#" target="_blank" rel="noopener" class="send-link link-teams"
+       onclick="copyAndOpen('teams-michelle')">
       <span class="step-num">2</span>
-      💼 Teams → Michelle (press Enter)
-    </a>
-    <a id="teams-rhonda" href="#" target="_blank" rel="noopener" class="send-link link-teams" onclick="markDone(this)">
-      <span class="step-num">3</span>
-      💼 Teams → Rhonda (press Enter)
+      💼 Teams → Michelle — paste &amp; Enter
     </a>
 
-    <div class="hint">Both links open pre-filled — nothing to type, just Send and Enter.<br>
-      💡 Each Teams button opens a 1:1 chat with the message pre-typed — just press Enter in each.</div>
+    <!-- Teams Rhonda -->
+    <a id="teams-rhonda" href="#" target="_blank" rel="noopener" class="send-link link-teams"
+       onclick="copyAndOpen('teams-rhonda')">
+      <span class="step-num">3</span>
+      💼 Teams → Rhonda — paste &amp; Enter
+    </a>
+
+    <div id="copy-confirm" style="display:none">
+      <span class="copied-badge">✓ Message copied to clipboard — just press Ctrl+V then Enter in Teams</span>
+    </div>
+
+    <div class="hint">
+      Teams buttons copy your message to clipboard automatically.<br>
+      Once Teams opens, press <strong>Ctrl+V</strong> to paste, then <strong>Enter</strong> to send.
+    </div>
     <button class="send-another" onclick="reset()">Send another message</button>
   </div>
 </div>
@@ -114,6 +125,7 @@
 <script>
   const M = 'michelle.carbone@appliedvalue.com';
   const R = 'rhonda.batchelder@appliedvalue.com';
+  let currentMsg = '';
 
   function wuphf() {
     const msg = document.getElementById('msg').value.trim();
@@ -127,42 +139,54 @@
       return;
     }
 
+    currentMsg = msg;
     const enc  = encodeURIComponent(msg);
     const subj = encodeURIComponent('WUPHF');
 
-    // Set BOTH link hrefs before showing the screen — no page navigation at all
+    // Set all hrefs before showing screen — no page navigation so nothing resets
     document.getElementById('email-link').href =
       'mailto:' + M + ',' + R + '?subject=' + subj + '&body=' + enc;
 
-    // Teams: two separate 1:1 chats so message pre-fills reliably
     document.getElementById('teams-michelle').href =
       'https://teams.microsoft.com/l/chat/0/0?users=' + M + '&message=' + enc;
+
     document.getElementById('teams-rhonda').href =
       'https://teams.microsoft.com/l/chat/0/0?users=' + R + '&message=' + enc;
 
-    // Switch screens — no window.location, no reload
+    // Switch screens
     document.getElementById('compose').style.display = 'none';
     const s = document.getElementById('sent-screen');
     s.style.display = 'block';
     s.classList.add('show');
+    document.getElementById('copy-confirm').style.display = 'none';
   }
 
-  // Dim a button after it's been clicked so user knows it's done
-  function markDone(el) {
-    setTimeout(() => el.classList.add('done'), 400);
+  // Copy message to clipboard then let the link open normally
+  function copyAndOpen(id) {
+    if (currentMsg) {
+      navigator.clipboard.writeText(currentMsg).then(() => {
+        const c = document.getElementById('copy-confirm');
+        c.style.display = 'block';
+        setTimeout(() => c.style.display = 'none', 4000);
+      }).catch(() => {
+        // Clipboard failed silently — Teams link still opens
+      });
+    }
+    // Don't return false — let the href open normally
   }
 
   function reset() {
     document.getElementById('msg').value = '';
     document.getElementById('cnt').textContent = '0';
-    document.getElementById('email-link').href = '#';
-    document.getElementById('teams-link').href = '#';
-    document.getElementById('email-link').classList.remove('done');
-    document.getElementById('teams-link').classList.remove('done');
+    currentMsg = '';
+    ['email-link','teams-michelle','teams-rhonda'].forEach(id => {
+      document.getElementById(id).href = '#';
+    });
     document.getElementById('compose').style.display = 'block';
     const s = document.getElementById('sent-screen');
     s.style.display = 'none';
     s.classList.remove('show');
+    document.getElementById('copy-confirm').style.display = 'none';
     document.getElementById('msg').focus();
   }
 
