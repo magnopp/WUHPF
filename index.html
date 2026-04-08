@@ -95,14 +95,18 @@
       📧 Open Outlook — then click Send
     </a>
 
-    <!-- Step 2: Teams — plain anchor, opens in new tab -->
-    <a id="teams-link" href="#" target="_blank" rel="noopener" class="send-link link-teams" onclick="markDone(this)">
+    <!-- Step 2 & 3: Teams — two 1:1 chats so message pre-fills -->
+    <a id="teams-michelle" href="#" target="_blank" rel="noopener" class="send-link link-teams" onclick="markDone(this)">
       <span class="step-num">2</span>
-      💼 Open Teams — then press Enter
+      💼 Teams → Michelle (press Enter)
+    </a>
+    <a id="teams-rhonda" href="#" target="_blank" rel="noopener" class="send-link link-teams" onclick="markDone(this)">
+      <span class="step-num">3</span>
+      💼 Teams → Rhonda (press Enter)
     </a>
 
     <div class="hint">Both links open pre-filled — nothing to type, just Send and Enter.<br>
-      💡 The Teams button opens your desktop Teams app directly.</div>
+      💡 Each Teams button opens a 1:1 chat with the message pre-typed — just press Enter in each.</div>
     <button class="send-another" onclick="reset()">Send another message</button>
   </div>
 </div>
@@ -130,8 +134,11 @@
     document.getElementById('email-link').href =
       'mailto:' + M + ',' + R + '?subject=' + subj + '&body=' + enc;
 
-    document.getElementById('teams-link').href =
-      'msteams://teams.microsoft.com/l/chat/0/0?users=' + M + ',' + R + '&message=' + enc;
+    // Teams: two separate 1:1 chats so message pre-fills reliably
+    document.getElementById('teams-michelle').href =
+      'https://teams.microsoft.com/l/chat/0/0?users=' + M + '&message=' + enc;
+    document.getElementById('teams-rhonda').href =
+      'https://teams.microsoft.com/l/chat/0/0?users=' + R + '&message=' + enc;
 
     // Switch screens — no window.location, no reload
     document.getElementById('compose').style.display = 'none';
