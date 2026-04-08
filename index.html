@@ -29,23 +29,22 @@
   .char-count { text-align: right; font-size: 11px; color: #bbb; margin-top: 6px; margin-bottom: 20px; }
   .wuphf-btn { width: 100%; padding: 18px; border: none; border-radius: 14px; background: linear-gradient(135deg, #e63946, #f4a261, #2a9d8f, #457b9d, #8338ec); background-size: 300% 300%; animation: grad 5s ease infinite; color: white; font-family: 'Nunito', sans-serif; font-size: 28px; font-weight: 900; letter-spacing: 3px; cursor: pointer; transition: transform 0.15s, box-shadow 0.15s; box-shadow: 0 4px 20px rgba(131,56,236,0.25); }
   @keyframes grad { 0%,100%{background-position:0% 50%} 50%{background-position:100% 50%} }
-  .wuphf-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(131,56,236,0.4); }
+  .wuphf-btn:hover { transform: translateY(-2px); }
   .wuphf-btn:active { transform: scale(0.98); }
-  #sent-screen { display: none; text-align: center; }
-  #sent-screen.show { display: block; animation: popIn 0.4s cubic-bezier(0.34,1.56,0.64,1); }
-  @keyframes popIn { from{opacity:0;transform:scale(0.85)} to{opacity:1;transform:scale(1)} }
-  .sent-icon { font-size: 44px; margin-bottom: 8px; }
-  .sent-title { font-family: 'Nunito', sans-serif; font-weight: 900; font-size: 24px; color: #222; margin-bottom: 6px; }
-  .sent-sub { font-size: 13px; color: #888; margin-bottom: 20px; }
-  .send-link { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; padding: 15px; border-radius: 12px; font-family: 'Inter', sans-serif; font-size: 15px; font-weight: 700; text-decoration: none; margin-bottom: 10px; transition: opacity 0.15s, transform 0.1s; cursor: pointer; border: none; }
-  .send-link:hover { opacity: 0.88; transform: translateY(-1px); }
-  .send-link:active { transform: scale(0.98); }
-  .link-email { background: #e8f4fd; color: #1565c0; border: 2px solid #bbdefb !important; }
-  .link-teams { background: #5b5fc7; color: white; }
-  .step-num { background: rgba(0,0,0,0.12); border-radius: 50%; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 800; flex-shrink: 0; }
-  .copied-badge { display: inline-block; background: #d1fae5; color: #065f46; font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 100px; margin-bottom: 10px; animation: fadeIn 0.3s ease; }
-  @keyframes fadeIn { from{opacity:0;transform:translateY(4px)} to{opacity:1;transform:translateY(0)} }
-  .hint { font-size: 11px; color: #aaa; margin-bottom: 18px; line-height: 1.6; }
+  #sent-screen { display: none; }
+  #sent-screen.show { display: block; animation: popIn 0.35s cubic-bezier(0.34,1.56,0.64,1); }
+  @keyframes popIn { from{opacity:0;transform:scale(0.9)} to{opacity:1;transform:scale(1)} }
+  .sent-icon { font-size: 42px; text-align: center; margin-bottom: 8px; }
+  .sent-title { font-family: 'Nunito', sans-serif; font-weight: 900; font-size: 24px; color: #222; text-align: center; margin-bottom: 6px; }
+  .sent-sub { font-size: 13px; color: #888; text-align: center; margin-bottom: 22px; }
+  .action { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+  .num { width: 26px; height: 26px; border-radius: 50%; background: #f0f0f0; color: #666; font-size: 12px; font-weight: 800; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .btn-link { flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px; padding: 14px 16px; border-radius: 12px; font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 700; text-decoration: none; transition: opacity 0.15s, transform 0.1s; }
+  .btn-link:hover { opacity: 0.88; transform: translateY(-1px); }
+  .btn-link:active { transform: scale(0.98); }
+  .email { background: #e8f4fd; color: #1565c0; }
+  .teams { background: #5b5fc7; color: white; }
+  .note { font-size: 11px; color: #aaa; text-align: center; margin: 12px 0 20px; line-height: 1.6; }
   .send-another { width: 100%; background: none; border: 2px solid #e5e5e5; border-radius: 10px; padding: 11px; font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 600; color: #666; cursor: pointer; transition: border-color 0.2s, color 0.2s; }
   .send-another:hover { border-color: #457b9d; color: #457b9d; }
   @media (max-width: 400px) { .card{padding:28px 20px 24px} .logo span{font-size:56px} .recipients{flex-direction:column} }
@@ -75,7 +74,6 @@
     </div>
   </div>
 
-  <!-- Compose screen -->
   <div id="compose">
     <div class="message-label">Your message</div>
     <textarea id="msg" placeholder="Type your message here…" maxlength="500"
@@ -84,40 +82,37 @@
     <button class="wuphf-btn" onclick="wuphf()">WUPHF!</button>
   </div>
 
-  <!-- Confirmation screen -->
   <div id="sent-screen">
     <div class="sent-icon">🚀</div>
-    <div class="sent-title">Ready to send!</div>
-    <div class="sent-sub">Click each button — then Send / Enter in the window that opens.</div>
+    <div class="sent-title">WUPHF!</div>
+    <div class="sent-sub">Click each — your message is already typed in each window.</div>
 
-    <!-- Email -->
-    <a id="email-link" href="#" class="send-link link-email">
-      <span class="step-num">1</span>
-      📧 Open Outlook — then click Send
-    </a>
-
-    <!-- Teams Michelle — clicking copies message to clipboard first -->
-    <a id="teams-michelle" href="#" target="_blank" rel="noopener" class="send-link link-teams"
-       onclick="copyAndOpen('teams-michelle')">
-      <span class="step-num">2</span>
-      💼 Teams → Michelle — paste &amp; Enter
-    </a>
-
-    <!-- Teams Rhonda -->
-    <a id="teams-rhonda" href="#" target="_blank" rel="noopener" class="send-link link-teams"
-       onclick="copyAndOpen('teams-rhonda')">
-      <span class="step-num">3</span>
-      💼 Teams → Rhonda — paste &amp; Enter
-    </a>
-
-    <div id="copy-confirm" style="display:none">
-      <span class="copied-badge">✓ Message copied to clipboard — just press Ctrl+V then Enter in Teams</span>
+    <div class="action">
+      <div class="num">1</div>
+      <a id="link-email" href="#" class="btn-link email">
+        📧 Outlook — click Send
+      </a>
     </div>
 
-    <div class="hint">
-      Teams buttons copy your message to clipboard automatically.<br>
-      Once Teams opens, press <strong>Ctrl+V</strong> to paste, then <strong>Enter</strong> to send.
+    <div class="action">
+      <div class="num">2</div>
+      <a id="link-michelle" href="#" target="_blank" rel="noopener" class="btn-link teams">
+        💼 Teams → Michelle — press Enter
+      </a>
     </div>
+
+    <div class="action">
+      <div class="num">3</div>
+      <a id="link-rhonda" href="#" target="_blank" rel="noopener" class="btn-link teams">
+        💼 Teams → Rhonda — press Enter
+      </a>
+    </div>
+
+    <div class="note">
+      Teams opens with your message ready in the chat box.<br>
+      Just press <strong>Enter</strong> to send.
+    </div>
+
     <button class="send-another" onclick="reset()">Send another message</button>
   </div>
 </div>
@@ -125,68 +120,47 @@
 <script>
   const M = 'michelle.carbone@appliedvalue.com';
   const R = 'rhonda.batchelder@appliedvalue.com';
-  let currentMsg = '';
 
   function wuphf() {
     const msg = document.getElementById('msg').value.trim();
     if (!msg) {
       const t = document.getElementById('msg');
-      t.classList.remove('shake');
-      void t.offsetWidth;
-      t.classList.add('shake');
-      t.focus();
+      t.classList.remove('shake'); void t.offsetWidth;
+      t.classList.add('shake'); t.focus();
       setTimeout(() => t.classList.remove('shake'), 500);
       return;
     }
 
-    currentMsg = msg;
     const enc  = encodeURIComponent(msg);
     const subj = encodeURIComponent('WUPHF');
 
-    // Set all hrefs before showing screen — no page navigation so nothing resets
-    document.getElementById('email-link').href =
+    // Email — plain anchor, no page navigation
+    document.getElementById('link-email').href =
       'mailto:' + M + ',' + R + '?subject=' + subj + '&body=' + enc;
 
-    document.getElementById('teams-michelle').href =
-      'https://teams.microsoft.com/l/chat/0/0?users=' + M + '&message=' + enc;
+    // Teams — 1:1 chats with message pre-filled in compose box
+    document.getElementById('link-michelle').href =
+      'https://teams.microsoft.com/l/chat/0/0?users=' + M + '&message=' + enc + '&topicName=WUPHF';
 
-    document.getElementById('teams-rhonda').href =
-      'https://teams.microsoft.com/l/chat/0/0?users=' + R + '&message=' + enc;
+    document.getElementById('link-rhonda').href =
+      'https://teams.microsoft.com/l/chat/0/0?users=' + R + '&message=' + enc + '&topicName=WUPHF';
 
-    // Switch screens
+    // Switch screens — no page navigation so hrefs stay intact
     document.getElementById('compose').style.display = 'none';
     const s = document.getElementById('sent-screen');
     s.style.display = 'block';
     s.classList.add('show');
-    document.getElementById('copy-confirm').style.display = 'none';
-  }
-
-  // Copy message to clipboard then let the link open normally
-  function copyAndOpen(id) {
-    if (currentMsg) {
-      navigator.clipboard.writeText(currentMsg).then(() => {
-        const c = document.getElementById('copy-confirm');
-        c.style.display = 'block';
-        setTimeout(() => c.style.display = 'none', 4000);
-      }).catch(() => {
-        // Clipboard failed silently — Teams link still opens
-      });
-    }
-    // Don't return false — let the href open normally
   }
 
   function reset() {
     document.getElementById('msg').value = '';
     document.getElementById('cnt').textContent = '0';
-    currentMsg = '';
-    ['email-link','teams-michelle','teams-rhonda'].forEach(id => {
-      document.getElementById(id).href = '#';
-    });
+    ['link-email','link-michelle','link-rhonda'].forEach(id =>
+      document.getElementById(id).href = '#');
     document.getElementById('compose').style.display = 'block';
     const s = document.getElementById('sent-screen');
     s.style.display = 'none';
     s.classList.remove('show');
-    document.getElementById('copy-confirm').style.display = 'none';
     document.getElementById('msg').focus();
   }
 
