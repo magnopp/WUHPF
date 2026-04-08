@@ -6,233 +6,47 @@
 <title>WUPHF</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@800;900&family=Inter:wght@400;500;600&display=swap');
-
   * { box-sizing: border-box; margin: 0; padding: 0; }
-
-  body {
-    min-height: 100vh;
-    background: #f5f5f5;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: 'Inter', sans-serif;
-    padding: 20px;
-  }
-
-  .card {
-    background: white;
-    border-radius: 24px;
-    padding: 40px 36px 36px;
-    width: 100%;
-    max-width: 480px;
-    box-shadow: 0 8px 40px rgba(0,0,0,0.10);
-  }
-
-  .logo {
-    text-align: center;
-    margin-bottom: 6px;
-    line-height: 1;
-  }
-
-  .logo span {
-    font-family: 'Nunito', sans-serif;
-    font-weight: 900;
-    font-size: 72px;
-    letter-spacing: -2px;
-  }
-
-  .logo .W  { color: #e63946; }
-  .logo .U  { color: #f4a261; }
-  .logo .P  { color: #2a9d8f; }
-  .logo .H  { color: #457b9d; }
-  .logo .F  { color: #8338ec; }
-
-  .tagline {
-    text-align: center;
-    font-size: 12px;
-    color: #aaa;
-    margin-bottom: 32px;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-  }
-
-  .recipients {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 20px;
-  }
-
-  .recipient {
-    flex: 1;
-    background: #f8f8f8;
-    border-radius: 12px;
-    padding: 12px 14px;
-    font-size: 13px;
-  }
-
-  .recipient-name {
-    font-weight: 600;
-    color: #222;
-    margin-bottom: 6px;
-  }
-
-  .channel-row {
-    display: flex;
-    gap: 6px;
-    flex-wrap: wrap;
-  }
-
-  .channel-pill {
-    font-size: 11px;
-    padding: 2px 8px;
-    border-radius: 100px;
-    font-weight: 500;
-  }
+  body { min-height: 100vh; background: #f5f5f5; display: flex; align-items: center; justify-content: center; font-family: 'Inter', sans-serif; padding: 20px; }
+  .card { background: white; border-radius: 24px; padding: 40px 36px 36px; width: 100%; max-width: 480px; box-shadow: 0 8px 40px rgba(0,0,0,0.10); }
+  .logo { text-align: center; margin-bottom: 6px; line-height: 1; }
+  .logo span { font-family: 'Nunito', sans-serif; font-weight: 900; font-size: 72px; letter-spacing: -2px; }
+  .logo .W { color: #e63946; } .logo .U { color: #f4a261; } .logo .P { color: #2a9d8f; } .logo .H { color: #457b9d; } .logo .F { color: #8338ec; }
+  .tagline { text-align: center; font-size: 12px; color: #aaa; margin-bottom: 28px; letter-spacing: 1px; text-transform: uppercase; }
+  .recipients { display: flex; gap: 10px; margin-bottom: 20px; }
+  .recipient { flex: 1; background: #f8f8f8; border-radius: 12px; padding: 12px 14px; font-size: 13px; }
+  .recipient-name { font-weight: 600; color: #222; margin-bottom: 6px; }
+  .channel-row { display: flex; gap: 6px; flex-wrap: wrap; }
+  .channel-pill { font-size: 11px; padding: 2px 8px; border-radius: 100px; font-weight: 500; }
   .pill-email { background: #e8f4fd; color: #1565c0; }
-  .pill-sms   { background: #e8f5e9; color: #2e7d32; }
   .pill-teams { background: #ede7f6; color: #4527a0; }
-
-  .message-label {
-    font-size: 13px;
-    font-weight: 600;
-    color: #555;
-    margin-bottom: 8px;
-  }
-
-  textarea {
-    width: 100%;
-    height: 130px;
-    border: 2px solid #e5e5e5;
-    border-radius: 14px;
-    padding: 14px 16px;
-    font-family: 'Inter', sans-serif;
-    font-size: 15px;
-    color: #222;
-    resize: none;
-    outline: none;
-    transition: border-color 0.2s;
-    line-height: 1.5;
-  }
-
+  .message-label { font-size: 13px; font-weight: 600; color: #555; margin-bottom: 8px; }
+  textarea { width: 100%; height: 130px; border: 2px solid #e5e5e5; border-radius: 14px; padding: 14px 16px; font-family: 'Inter', sans-serif; font-size: 15px; color: #222; resize: none; outline: none; transition: border-color 0.2s; line-height: 1.5; }
   textarea:focus { border-color: #457b9d; }
   textarea::placeholder { color: #bbb; }
-
-  .char-count {
-    text-align: right;
-    font-size: 11px;
-    color: #bbb;
-    margin-top: 6px;
-    margin-bottom: 20px;
-  }
-
-  .wuphf-btn {
-    width: 100%;
-    padding: 18px;
-    border: none;
-    border-radius: 14px;
-    background: linear-gradient(135deg, #e63946 0%, #f4a261 25%, #2a9d8f 50%, #457b9d 75%, #8338ec 100%);
-    background-size: 200% 200%;
-    animation: gradientShift 4s ease infinite;
-    color: white;
-    font-family: 'Nunito', sans-serif;
-    font-size: 28px;
-    font-weight: 900;
-    letter-spacing: 3px;
-    cursor: pointer;
-    transition: transform 0.15s, box-shadow 0.15s;
-    box-shadow: 0 4px 20px rgba(131,56,236,0.25);
-  }
-
-  @keyframes gradientShift {
-    0%   { background-position: 0% 50%; }
-    50%  { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
-  }
-
+  textarea.error { border-color: #e63946; }
+  .char-count { text-align: right; font-size: 11px; color: #bbb; margin-top: 6px; margin-bottom: 20px; }
+  .wuphf-btn { width: 100%; padding: 18px; border: none; border-radius: 14px; background: linear-gradient(135deg, #e63946 0%, #f4a261 25%, #2a9d8f 50%, #457b9d 75%, #8338ec 100%); background-size: 200% 200%; animation: gradientShift 4s ease infinite; color: white; font-family: 'Nunito', sans-serif; font-size: 28px; font-weight: 900; letter-spacing: 3px; cursor: pointer; transition: transform 0.15s, box-shadow 0.15s; box-shadow: 0 4px 20px rgba(131,56,236,0.25); }
+  @keyframes gradientShift { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
   .wuphf-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(131,56,236,0.35); }
   .wuphf-btn:active { transform: scale(0.98); }
-  .wuphf-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
-
-  /* Sent state */
-  .sent-overlay {
-    display: none;
-    text-align: center;
-    padding: 10px 0 4px;
-  }
-
+  .sent-overlay { display: none; text-align: center; padding: 10px 0 4px; }
   .sent-overlay.show { display: block; animation: popIn 0.4s cubic-bezier(0.34,1.56,0.64,1); }
-
-  @keyframes popIn {
-    from { opacity: 0; transform: scale(0.8); }
-    to   { opacity: 1; transform: scale(1); }
-  }
-
+  @keyframes popIn { from { opacity: 0; transform: scale(0.8); } to { opacity: 1; transform: scale(1); } }
   .sent-icon { font-size: 40px; margin-bottom: 6px; }
   .sent-title { font-family: 'Nunito', sans-serif; font-weight: 900; font-size: 22px; color: #222; margin-bottom: 4px; }
-  .sent-sub { font-size: 13px; color: #888; margin-bottom: 16px; }
-
-  .sent-channels {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    flex-wrap: wrap;
-    margin-bottom: 16px;
-  }
-
-  .sent-chip {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    padding: 6px 14px;
-    border-radius: 100px;
-    font-size: 12px;
-    font-weight: 600;
-    animation: chipIn 0.4s ease backwards;
-  }
-  .sent-chip:nth-child(1) { animation-delay: 0.1s; }
-  .sent-chip:nth-child(2) { animation-delay: 0.2s; }
-  .sent-chip:nth-child(3) { animation-delay: 0.3s; }
-
-  @keyframes chipIn {
-    from { opacity: 0; transform: translateY(8px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-
-  .chip-email { background: #e8f4fd; color: #1565c0; }
-  .chip-sms   { background: #e8f5e9; color: #2e7d32; }
-  .chip-teams { background: #ede7f6; color: #4527a0; }
-
-  .send-another {
-    background: none;
-    border: 2px solid #e5e5e5;
-    border-radius: 10px;
-    padding: 9px 22px;
-    font-family: 'Inter', sans-serif;
-    font-size: 14px;
-    font-weight: 600;
-    color: #666;
-    cursor: pointer;
-    transition: border-color 0.2s, color 0.2s;
-  }
+  .sent-sub { font-size: 13px; color: #888; margin-bottom: 20px; }
+  .next-steps { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; text-align: left; }
+  .next-step { display: flex; align-items: flex-start; gap: 12px; background: #f8f8f8; border-radius: 12px; padding: 12px 14px; animation: chipIn 0.4s ease backwards; }
+  .next-step:nth-child(1) { animation-delay: 0.1s; }
+  .next-step:nth-child(2) { animation-delay: 0.2s; }
+  @keyframes chipIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+  .next-step-icon { font-size: 22px; flex-shrink: 0; margin-top: 1px; }
+  .next-step-text { font-size: 13px; color: #444; line-height: 1.5; }
+  .next-step-text strong { color: #222; }
+  .send-another { width: 100%; background: none; border: 2px solid #e5e5e5; border-radius: 10px; padding: 10px 22px; font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 600; color: #666; cursor: pointer; transition: border-color 0.2s, color 0.2s; }
   .send-another:hover { border-color: #457b9d; color: #457b9d; }
-
-  .popup-note {
-    margin-top: 20px;
-    background: #fffbe6;
-    border: 1px solid #ffe58f;
-    border-radius: 10px;
-    padding: 10px 14px;
-    font-size: 12px;
-    color: #8a6d00;
-    display: none;
-  }
-  .popup-note.show { display: block; }
-
-  @media (max-width: 400px) {
-    .card { padding: 28px 20px 24px; }
-    .logo span { font-size: 56px; }
-    .recipients { flex-direction: column; }
-  }
+  @media (max-width: 400px) { .card { padding: 28px 20px 24px; } .logo span { font-size: 56px; } .recipients { flex-direction: column; } }
 </style>
 </head>
 <body>
@@ -246,17 +60,15 @@
     <div class="recipient">
       <div class="recipient-name">Michelle Carbone</div>
       <div class="channel-row">
-        <span class="channel-pill pill-email">Email</span>
-        <span class="channel-pill pill-sms">Text</span>
-        <span class="channel-pill pill-teams">Teams</span>
+        <span class="channel-pill pill-email">📧 Email</span>
+        <span class="channel-pill pill-teams">💼 Teams</span>
       </div>
     </div>
     <div class="recipient">
       <div class="recipient-name">Rhonda Batchelder</div>
       <div class="channel-row">
-        <span class="channel-pill pill-email">Email</span>
-        <span class="channel-pill pill-sms">Text</span>
-        <span class="channel-pill pill-teams">Teams</span>
+        <span class="channel-pill pill-email">📧 Email</span>
+        <span class="channel-pill pill-teams">💼 Teams</span>
       </div>
     </div>
   </div>
@@ -266,76 +78,68 @@
     <textarea id="msg" placeholder="Type your message here…" maxlength="500" oninput="updateCount()"></textarea>
     <div class="char-count"><span id="count">0</span> / 500</div>
     <button class="wuphf-btn" onclick="sendWUPHF()">WUPHF!</button>
-    <div class="popup-note" id="popup-note">
-      💡 Your browser may ask to allow popups — click <strong>Allow</strong> to open Teams and SMS.
-    </div>
   </div>
 
   <div class="sent-overlay" id="sent-overlay">
-    <div class="sent-icon">🎉</div>
-    <div class="sent-title">WUPHF'd!</div>
-    <div class="sent-sub">Sent to Michelle &amp; Rhonda on all channels</div>
-    <div class="sent-channels">
-      <span class="sent-chip chip-email">📧 Email</span>
-      <span class="sent-chip chip-sms">💬 Text</span>
-      <span class="sent-chip chip-teams">💼 Teams</span>
+    <div class="sent-icon">🚀</div>
+    <div class="sent-title">Almost there!</div>
+    <div class="sent-sub">Two quick steps and they're notified on both channels:</div>
+    <div class="next-steps">
+      <div class="next-step">
+        <div class="next-step-icon">📧</div>
+        <div class="next-step-text">
+          <strong>Outlook opened</strong> with your message ready to go.<br>
+          Just click <strong>Send</strong> in the email window.
+        </div>
+      </div>
+      <div class="next-step">
+        <div class="next-step-icon">💼</div>
+        <div class="next-step-text">
+          <strong>Teams opened</strong> with your message pre-typed in a group chat.<br>
+          Just press <strong>Enter</strong> in the Teams window.
+        </div>
+      </div>
     </div>
-    <button class="send-another" onclick="reset()">Send another</button>
+    <button class="send-another" onclick="reset()">Send another message</button>
   </div>
 </div>
 
 <script>
-  const MICHELLE_EMAIL = 'michelle.carbone@appliedvalue.com';
-  const RHONDA_EMAIL   = 'rhonda.batchelder@appliedvalue.com';
-  const MICHELLE_PHONE = '+19786625322';
-  const RHONDA_PHONE   = '+19786314139';
+  const MICHELLE = 'michelle.carbone@appliedvalue.com';
+  const RHONDA   = 'rhonda.batchelder@appliedvalue.com';
 
   function updateCount() {
     document.getElementById('count').textContent = document.getElementById('msg').value.length;
   }
 
-  function openLink(url) {
-    const a = document.createElement('a');
-    a.href = url;
-    a.target = '_blank';
-    a.rel = 'noopener';
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-  }
-
   function sendWUPHF() {
     const msg = document.getElementById('msg').value.trim();
     if (!msg) {
-      document.getElementById('msg').focus();
-      document.getElementById('msg').style.borderColor = '#e63946';
-      setTimeout(() => document.getElementById('msg').style.borderColor = '', 1000);
+      const t = document.getElementById('msg');
+      t.classList.add('error'); t.focus();
+      setTimeout(() => t.classList.remove('error'), 1000);
       return;
     }
 
     const enc  = encodeURIComponent(msg);
     const subj = encodeURIComponent('WUPHF');
 
-    // 1. Email — both recipients, opens default email client
-    openLink(`mailto:${MICHELLE_EMAIL},${RHONDA_EMAIL}?subject=${subj}&body=${enc}`);
+    // Open Outlook with both recipients and message pre-filled
+    window.location.href = `mailto:${MICHELLE},${RHONDA}?subject=${subj}&body=${enc}`;
 
-    // 2. Teams — group chat with both (opens Teams app or web)
-    openLink(`https://teams.microsoft.com/l/chat/0/0?users=${MICHELLE_EMAIL},${RHONDA_EMAIL}&topicName=WUPHF&message=${enc}`);
+    // Open Teams group chat with message pre-typed (slight delay so email opens first)
+    setTimeout(() => {
+      window.open(
+        `https://teams.microsoft.com/l/chat/0/0?users=${MICHELLE},${RHONDA}&topicName=WUPHF&message=${enc}`,
+        '_blank'
+      );
+    }, 600);
 
-    // 3. SMS Michelle
-    openLink(`sms:${MICHELLE_PHONE}?body=${enc}`);
-
-    // 4. SMS Rhonda
-    openLink(`sms:${RHONDA_PHONE}?body=${enc}`);
-
-    // Show success
+    // Show next-steps screen
     document.getElementById('compose-area').style.display = 'none';
     const overlay = document.getElementById('sent-overlay');
     overlay.style.display = 'block';
     overlay.classList.add('show');
-
-    // Hint about popups (show after short delay)
-    setTimeout(() => document.getElementById('popup-note').classList.add('show'), 400);
   }
 
   function reset() {
@@ -345,11 +149,9 @@
     const overlay = document.getElementById('sent-overlay');
     overlay.style.display = 'none';
     overlay.classList.remove('show');
-    document.getElementById('popup-note').classList.remove('show');
     document.getElementById('msg').focus();
   }
 
-  // Send on Ctrl+Enter / Cmd+Enter
   document.getElementById('msg').addEventListener('keydown', e => {
     if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') sendWUPHF();
   });
