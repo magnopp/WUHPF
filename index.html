@@ -101,7 +101,8 @@
       💼 Open Teams — then press Enter
     </a>
 
-    <div class="hint">Both links open pre-filled — nothing to type, just Send and Enter.</div>
+    <div class="hint">Both links open pre-filled — nothing to type, just Send and Enter.<br>
+      💡 The Teams button opens your desktop Teams app directly.</div>
     <button class="send-another" onclick="reset()">Send another message</button>
   </div>
 </div>
@@ -130,7 +131,7 @@
       'mailto:' + M + ',' + R + '?subject=' + subj + '&body=' + enc;
 
     document.getElementById('teams-link').href =
-      'https://teams.microsoft.com/l/chat/0/0?users=' + M + ',' + R + '&message=' + enc;
+      'msteams://teams.microsoft.com/l/chat/0/0?users=' + M + ',' + R + '&message=' + enc;
 
     // Switch screens — no window.location, no reload
     document.getElementById('compose').style.display = 'none';
