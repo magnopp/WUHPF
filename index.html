@@ -46,6 +46,8 @@
   .next-step-text strong { color: #222; }
   .send-another { width: 100%; background: none; border: 2px solid #e5e5e5; border-radius: 10px; padding: 10px 22px; font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 600; color: #666; cursor: pointer; transition: border-color 0.2s, color 0.2s; }
   .send-another:hover { border-color: #457b9d; color: #457b9d; }
+  .teams-btn { width: 100%; background: #4527a0; border: none; border-radius: 10px; padding: 12px 22px; font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 600; color: white; cursor: pointer; margin-bottom: 10px; transition: background 0.2s; }
+  .teams-btn:hover { background: #6a3fbf; }
   @media (max-width: 400px) { .card { padding: 28px 20px 24px; } .logo span { font-size: 56px; } .recipients { flex-direction: column; } }
 </style>
 </head>
@@ -95,11 +97,12 @@
       <div class="next-step">
         <div class="next-step-icon">💼</div>
         <div class="next-step-text">
-          <strong>Teams opened</strong> with your message pre-typed in a group chat.<br>
-          Just press <strong>Enter</strong> in the Teams window.
+          <strong>Teams:</strong> Click the button below to open a pre-filled group chat,<br>
+          then press <strong>Enter</strong> to send.
         </div>
       </div>
     </div>
+    <button class="teams-btn" id="teams-btn" onclick="openTeams()">💼 Open Teams message</button>
     <button class="send-another" onclick="reset()">Send another message</button>
   </div>
 </div>
@@ -124,22 +127,21 @@
     const enc  = encodeURIComponent(msg);
     const subj = encodeURIComponent('WUPHF');
 
+    // Store for Teams button
+    window._teamsUrl = `https://teams.microsoft.com/l/chat/0/0?users=${MICHELLE},${RHONDA}&topicName=WUPHF&message=${enc}`;
+
     // Open Outlook with both recipients and message pre-filled
     window.location.href = `mailto:${MICHELLE},${RHONDA}?subject=${subj}&body=${enc}`;
-
-    // Open Teams group chat with message pre-typed (slight delay so email opens first)
-    setTimeout(() => {
-      window.open(
-        `https://teams.microsoft.com/l/chat/0/0?users=${MICHELLE},${RHONDA}&topicName=WUPHF&message=${enc}`,
-        '_blank'
-      );
-    }, 600);
 
     // Show next-steps screen
     document.getElementById('compose-area').style.display = 'none';
     const overlay = document.getElementById('sent-overlay');
     overlay.style.display = 'block';
     overlay.classList.add('show');
+  }
+
+  function openTeams() {
+    if (window._teamsUrl) window.open(window._teamsUrl, '_blank');
   }
 
   function reset() {
