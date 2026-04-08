@@ -17,40 +17,39 @@
   .recipient { flex: 1; background: #f8f8f8; border-radius: 12px; padding: 12px 14px; font-size: 13px; }
   .recipient-name { font-weight: 600; color: #222; margin-bottom: 6px; }
   .channel-row { display: flex; gap: 6px; flex-wrap: wrap; }
-  .channel-pill { font-size: 11px; padding: 2px 8px; border-radius: 100px; font-weight: 500; }
+  .pill { font-size: 11px; padding: 2px 8px; border-radius: 100px; font-weight: 500; }
   .pill-email { background: #e8f4fd; color: #1565c0; }
   .pill-teams { background: #ede7f6; color: #4527a0; }
   .message-label { font-size: 13px; font-weight: 600; color: #555; margin-bottom: 8px; }
   textarea { width: 100%; height: 130px; border: 2px solid #e5e5e5; border-radius: 14px; padding: 14px 16px; font-family: 'Inter', sans-serif; font-size: 15px; color: #222; resize: none; outline: none; transition: border-color 0.2s; line-height: 1.5; }
   textarea:focus { border-color: #457b9d; }
   textarea::placeholder { color: #bbb; }
-  textarea.error { border-color: #e63946; }
+  textarea.shake { animation: shake 0.4s ease; border-color: #e63946; }
+  @keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-6px)} 75%{transform:translateX(6px)} }
   .char-count { text-align: right; font-size: 11px; color: #bbb; margin-top: 6px; margin-bottom: 20px; }
-  .wuphf-btn { width: 100%; padding: 18px; border: none; border-radius: 14px; background: linear-gradient(135deg, #e63946 0%, #f4a261 25%, #2a9d8f 50%, #457b9d 75%, #8338ec 100%); background-size: 200% 200%; animation: gradientShift 4s ease infinite; color: white; font-family: 'Nunito', sans-serif; font-size: 28px; font-weight: 900; letter-spacing: 3px; cursor: pointer; transition: transform 0.15s, box-shadow 0.15s; box-shadow: 0 4px 20px rgba(131,56,236,0.25); }
-  @keyframes gradientShift { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
-  .wuphf-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(131,56,236,0.35); }
+  .wuphf-btn { width: 100%; padding: 18px; border: none; border-radius: 14px; background: linear-gradient(135deg, #e63946, #f4a261, #2a9d8f, #457b9d, #8338ec); background-size: 300% 300%; animation: grad 5s ease infinite; color: white; font-family: 'Nunito', sans-serif; font-size: 28px; font-weight: 900; letter-spacing: 3px; cursor: pointer; transition: transform 0.15s, box-shadow 0.15s; box-shadow: 0 4px 20px rgba(131,56,236,0.25); }
+  @keyframes grad { 0%,100%{background-position:0% 50%} 50%{background-position:100% 50%} }
+  .wuphf-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(131,56,236,0.4); }
   .wuphf-btn:active { transform: scale(0.98); }
-  .sent-overlay { display: none; text-align: center; padding: 10px 0 4px; }
-  .sent-overlay.show { display: block; animation: popIn 0.4s cubic-bezier(0.34,1.56,0.64,1); }
-  @keyframes popIn { from { opacity: 0; transform: scale(0.8); } to { opacity: 1; transform: scale(1); } }
-  .sent-icon { font-size: 40px; margin-bottom: 6px; }
-  .sent-title { font-family: 'Nunito', sans-serif; font-weight: 900; font-size: 22px; color: #222; margin-bottom: 4px; }
-  .sent-sub { font-size: 13px; color: #888; margin-bottom: 20px; }
-  .next-steps { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; text-align: left; }
-  .next-step { display: flex; align-items: flex-start; gap: 12px; background: #f8f8f8; border-radius: 12px; padding: 12px 14px; animation: chipIn 0.4s ease backwards; }
-  .next-step:nth-child(1) { animation-delay: 0.1s; }
-  .next-step:nth-child(2) { animation-delay: 0.2s; }
-  @keyframes chipIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
-  .next-step-icon { font-size: 22px; flex-shrink: 0; margin-top: 1px; }
-  .next-step-text { font-size: 13px; color: #444; line-height: 1.5; }
-  .next-step-text strong { color: #222; }
-  .send-another { width: 100%; background: none; border: 2px solid #e5e5e5; border-radius: 10px; padding: 10px 22px; font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 600; color: #666; cursor: pointer; transition: border-color 0.2s, color 0.2s; }
+  /* Confirmation screen */
+  #sent-screen { display: none; text-align: center; }
+  #sent-screen.show { display: block; animation: popIn 0.4s cubic-bezier(0.34,1.56,0.64,1); }
+  @keyframes popIn { from{opacity:0;transform:scale(0.85)} to{opacity:1;transform:scale(1)} }
+  .sent-icon { font-size: 44px; margin-bottom: 8px; }
+  .sent-title { font-family: 'Nunito', sans-serif; font-weight: 900; font-size: 24px; color: #222; margin-bottom: 6px; }
+  .sent-sub { font-size: 13px; color: #888; margin-bottom: 22px; }
+  .action-card { display: flex; align-items: flex-start; gap: 12px; background: #f8f8f8; border-radius: 12px; padding: 14px 16px; margin-bottom: 10px; text-align: left; animation: slideUp 0.3s ease backwards; }
+  .action-card:nth-child(1) { animation-delay: 0.1s; }
+  .action-card:nth-child(2) { animation-delay: 0.2s; }
+  @keyframes slideUp { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
+  .action-icon { font-size: 24px; flex-shrink: 0; }
+  .action-text { font-size: 13px; color: #444; line-height: 1.6; }
+  .action-text strong { color: #111; }
+  .teams-open-btn { display: block; width: 100%; margin-top: 6px; background: #5b5fc7; color: white; border: none; border-radius: 10px; padding: 12px; font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 700; cursor: pointer; text-align: center; text-decoration: none; transition: background 0.2s; }
+  .teams-open-btn:hover { background: #4a4eb5; }
+  .send-another { width: 100%; margin-top: 14px; background: none; border: 2px solid #e5e5e5; border-radius: 10px; padding: 11px; font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 600; color: #666; cursor: pointer; transition: border-color 0.2s, color 0.2s; }
   .send-another:hover { border-color: #457b9d; color: #457b9d; }
-  .teams-btn { display: block; width: 100%; background: #5b5fc7; border: none; border-radius: 10px; padding: 14px 22px; font-family: 'Inter', sans-serif; font-size: 15px; font-weight: 700; color: white; cursor: pointer; margin-bottom: 10px; text-align: center; text-decoration: none; transition: background 0.2s; box-sizing: border-box; }
-  .teams-btn:hover { background: #4b4fb7; }
-  .teams-btn { width: 100%; background: #4527a0; border: none; border-radius: 10px; padding: 12px 22px; font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 600; color: white; cursor: pointer; margin-bottom: 10px; transition: background 0.2s; }
-  .teams-btn:hover { background: #6a3fbf; }
-  @media (max-width: 400px) { .card { padding: 28px 20px 24px; } .logo span { font-size: 56px; } .recipients { flex-direction: column; } }
+  @media (max-width: 400px) { .card{padding:28px 20px 24px} .logo span{font-size:56px} .recipients{flex-direction:column} }
 </style>
 </head>
 <body>
@@ -64,90 +63,110 @@
     <div class="recipient">
       <div class="recipient-name">Michelle Carbone</div>
       <div class="channel-row">
-        <span class="channel-pill pill-email">📧 Email</span>
-        <span class="channel-pill pill-teams">💼 Teams</span>
+        <span class="pill pill-email">📧 Email</span>
+        <span class="pill pill-teams">💼 Teams</span>
       </div>
     </div>
     <div class="recipient">
       <div class="recipient-name">Rhonda Batchelder</div>
       <div class="channel-row">
-        <span class="channel-pill pill-email">📧 Email</span>
-        <span class="channel-pill pill-teams">💼 Teams</span>
+        <span class="pill pill-email">📧 Email</span>
+        <span class="pill pill-teams">💼 Teams</span>
       </div>
     </div>
   </div>
 
-  <div id="compose-area">
+  <!-- Compose -->
+  <div id="compose">
     <div class="message-label">Your message</div>
-    <textarea id="msg" placeholder="Type your message here…" maxlength="500" oninput="updateCount()"></textarea>
-    <div class="char-count"><span id="count">0</span> / 500</div>
-    <button class="wuphf-btn" onclick="sendWUPHF()">WUPHF!</button>
+    <textarea id="msg" placeholder="Type your message here…" maxlength="500" oninput="document.getElementById('cnt').textContent=this.value.length"></textarea>
+    <div class="char-count"><span id="cnt">0</span> / 500</div>
+    <button class="wuphf-btn" onclick="wuphf()">WUPHF!</button>
   </div>
 
-  <div class="sent-overlay" id="sent-overlay">
+  <!-- Confirmation -->
+  <div id="sent-screen">
     <div class="sent-icon">🚀</div>
-    <div class="sent-title">Almost there!</div>
-    <div class="sent-sub">Two quick steps and they're notified on both channels:</div>
-    <div class="next-steps">
-      <div class="next-step">
-        <div class="next-step-icon">📧</div>
-        <div class="next-step-text">
-          <strong>Outlook opened</strong> — click <strong>Send</strong> in the email window.
-        </div>
+    <div class="sent-title">WUPHF'd!</div>
+    <div class="sent-sub">One click each and it's done:</div>
+
+    <div class="action-card">
+      <div class="action-icon">📧</div>
+      <div class="action-text">
+        <strong>Outlook is open</strong> with your message ready.<br>
+        Click <strong>Send</strong> in the Outlook window.
       </div>
     </div>
-    <a id="teams-link" href="#" target="_blank" class="teams-btn">
-      💼 Open Teams &amp; press Enter to send
-    </a>
+
+    <div class="action-card">
+      <div class="action-icon">💼</div>
+      <div class="action-text">
+        <strong>Teams:</strong> Click the button below, then press <strong>Enter</strong>.
+      </div>
+    </div>
+
+    <button class="teams-open-btn" id="teams-btn" onclick="openTeams()">
+      💼 Open Teams chat &amp; press Enter
+    </button>
+
     <button class="send-another" onclick="reset()">Send another message</button>
   </div>
 </div>
 
 <script>
-  const MICHELLE = 'michelle.carbone@appliedvalue.com';
-  const RHONDA   = 'rhonda.batchelder@appliedvalue.com';
+  const M = 'michelle.carbone@appliedvalue.com';
+  const R = 'rhonda.batchelder@appliedvalue.com';
+  let teamsUrl = '';
 
-  function updateCount() {
-    document.getElementById('count').textContent = document.getElementById('msg').value.length;
-  }
-
-  function sendWUPHF() {
+  function wuphf() {
     const msg = document.getElementById('msg').value.trim();
     if (!msg) {
       const t = document.getElementById('msg');
-      t.classList.add('error'); t.focus();
-      setTimeout(() => t.classList.remove('error'), 1000);
+      t.classList.remove('shake');
+      void t.offsetWidth; // reflow to restart animation
+      t.classList.add('shake');
+      t.focus();
+      setTimeout(() => t.classList.remove('shake'), 500);
       return;
     }
 
     const enc  = encodeURIComponent(msg);
     const subj = encodeURIComponent('WUPHF');
 
-    // Store for Teams button
-    window._teamsUrl = `msteams:/l/chat/0/0?users=${MICHELLE},${RHONDA}&topicName=WUPHF&message=${enc}`;
+    // Save Teams URL in JS variable — reliable, not affected by page navigation
+    teamsUrl = 'https://teams.microsoft.com/l/chat/0/0?users=' + M + ',' + R + '&message=' + enc;
 
-    // Open Outlook with both recipients and message pre-filled
-    window.location.href = `mailto:${MICHELLE},${RHONDA}?subject=${subj}&body=${enc}`;
+    // Open Outlook using a temporary anchor — does NOT navigate the page
+    const a = document.createElement('a');
+    a.href = 'mailto:' + M + ',' + R + '?subject=' + subj + '&body=' + enc;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
 
-    // Show next-steps screen
-    document.getElementById('compose-area').style.display = 'none';
-    const overlay = document.getElementById('sent-overlay');
-    overlay.style.display = 'block';
-    overlay.classList.add('show');
+    // Show confirmation
+    document.getElementById('compose').style.display = 'none';
+    const s = document.getElementById('sent-screen');
+    s.style.display = 'block';
+    s.classList.add('show');
+  }
+
+  function openTeams() {
+    if (teamsUrl) window.open(teamsUrl, '_blank');
   }
 
   function reset() {
     document.getElementById('msg').value = '';
-    document.getElementById('count').textContent = '0';
-    document.getElementById('compose-area').style.display = 'block';
-    const overlay = document.getElementById('sent-overlay');
-    overlay.style.display = 'none';
-    overlay.classList.remove('show');
+    document.getElementById('cnt').textContent = '0';
+    document.getElementById('compose').style.display = 'block';
+    const s = document.getElementById('sent-screen');
+    s.style.display = 'none';
+    s.classList.remove('show');
+    teamsUrl = '';
     document.getElementById('msg').focus();
   }
 
   document.getElementById('msg').addEventListener('keydown', e => {
-    if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') sendWUPHF();
+    if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') wuphf();
   });
 </script>
 </body>
