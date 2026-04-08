@@ -90,19 +90,16 @@
       <div class="next-step">
         <div class="next-step-icon">📧</div>
         <div class="next-step-text">
-          <strong>Outlook opened</strong> with your message ready to go.<br>
-          Just click <strong>Send</strong> in the email window.
+          <strong>Outlook opened</strong> — click <strong>Send</strong> in the email window.
         </div>
       </div>
       <div class="next-step">
         <div class="next-step-icon">💼</div>
         <div class="next-step-text">
-          <strong>Teams:</strong> Click the button below to open a pre-filled group chat,<br>
-          then press <strong>Enter</strong> to send.
+          <strong>Teams opened</strong> — press <strong>Enter</strong> in the Teams window.
         </div>
       </div>
     </div>
-    <button class="teams-btn" id="teams-btn" onclick="openTeams()">💼 Open Teams message</button>
     <button class="send-another" onclick="reset()">Send another message</button>
   </div>
 </div>
@@ -128,7 +125,7 @@
     const subj = encodeURIComponent('WUPHF');
 
     // Store for Teams button
-    window._teamsUrl = `https://teams.microsoft.com/l/chat/0/0?users=${MICHELLE},${RHONDA}&topicName=WUPHF&message=${enc}`;
+    window._teamsUrl = `msteams:/l/chat/0/0?users=${MICHELLE},${RHONDA}&topicName=WUPHF&message=${enc}`;
 
     // Open Outlook with both recipients and message pre-filled
     window.location.href = `mailto:${MICHELLE},${RHONDA}?subject=${subj}&body=${enc}`;
